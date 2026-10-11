@@ -1,0 +1,505 @@
+# Student Exam & Results Management System
+# Education Domain
+# Developed using Python Object-Oriented Programming (OOP)
+
+class Result:
+    """
+    Represents the academic result of a student in one course.
+    """
+
+    def __init__(self, course_name, assignment_score, exam_score):
+        self.course_name = course_name
+        self.assignment_score = assignment_score
+        self.exam_score = exam_score
+
+    # Instance method
+    def calculate_total(self):
+        return self.assignment_score + self.exam_score
+
+    # Instance method
+    def get_grade(self):
+        total = self.calculate_total()
+
+        if total >= 80:
+            return "A"
+        elif total >= 70:
+            return "B"
+        elif total >= 60:
+            return "C"
+        elif total >= 50:
+            return "D"
+        else:
+            return "F"
+
+    def display_result(self):
+        total = self.calculate_total()
+        grade = self.get_grade()
+
+        print(f"Course: {self.course_name}")
+        print(f"Assignment Score: {self.assignment_score}")
+        print(f"Exam Score: {self.exam_score}")
+        print(f"Total: {total}")
+        print(f"Grade: {grade}")
+
+
+class Student:
+    """
+    Represents a student in the academic management system.
+    """
+
+    next_id = 1001
+
+    def __init__(self, student_id, name, program):
+        self.student_id = student_id
+        self.name = name
+        self.program = program
+        self.results = []
+
+    # Class method
+    @classmethod
+    def create_student(cls, name, program):
+        student_id = cls.next_id
+        cls.next_id += 1
+
+        return cls(student_id, name, program)
+
+    # Instance method
+    def add_result(self, result):
+        self.results.append(result)
+
+    # Instance method
+    def calculate_average(self):
+        if len(self.results) == 0:
+            return 0
+
+        total = 0
+
+        for result in self.results:
+            total += result.calculate_total()
+
+        return total / len(self.results)
+
+    # Instance method
+    def display_student(self):
+        print("\n------------------------------")
+        print("STUDENT INFORMATION")
+        print("------------------------------")
+        print(f"Student ID: {self.student_id}")
+        print(f"Name: {self.name}")
+        print(f"Program: {self.program}")
+
+        if len(self.results) == 0:
+            print("No results recorded.")
+        else:
+            print("\nRESULTS")
+
+            for result in self.results:
+                result.display_result()
+
+            print(f"\nAverage Score: {self.calculate_average():.2f}")
+
+
+# --------------------------------------------------
+# DATA STRUCTURE
+# One list is used to store multiple Student objects.
+# --------------------------------------------------
+
+students = []
+
+
+# Function to add a student
+def add_student():
+    print("\n===== ADD STUDENT =====")
+
+    name = input("Enter student name: ")
+    program = input("Enter program: ")
+
+    student = Student.create_student(name, program)
+
+    students.append(student)
+
+    print("\nStudent added successfully!")
+    print(f"Generated Student ID: {student.student_id}")
+
+
+# Function to add a result to a student
+def add_result():
+    print("\n===== ADD RESULT =====")
+
+    if len(students) == 0:
+        print("No students available.")
+        return
+
+    try:
+        student_id = int(input("Enter student ID: "))
+    except ValueError:
+        print("Please enter a valid student ID.")
+        return
+
+    for student in students:
+
+        if student.student_id == student_id:
+
+            course_name = input("Enter course name: ")
+
+            try:
+                assignment_score = float(
+                    input("Enter assignment score: ")
+                )
+
+                exam_score = float(
+                    input("Enter exam score: ")
+                )
+            except ValueError:
+                print("Scores must be numbers.")
+                return
+
+            # Basic validation
+            if assignment_score < 0 or assignment_score > 40:
+                print("Assignment score must be between 0 and 40.")
+                return
+
+            if exam_score < 0 or exam_score > 60:
+                print("Exam score must be between 0 and 60.")
+                return
+
+            result = Result(
+                course_name,
+                assignment_score,
+                exam_score
+            )
+
+            # Student and Result objects interact here
+            student.add_result(result)
+
+            print("\nResult added successfully!")
+            return
+
+    print("Student not found.")
+
+
+# Function to display all students
+def display_students():
+
+    print("\n===== ALL STUDENTS =====")
+
+    if len(students) == 0:
+        print("No student records available.")
+        return
+
+    for student in students:
+        student.display_student()
+
+
+# Function to search for a student
+def search_student():
+
+    print("\n===== SEARCH STUDENT =====")
+
+    try:
+        student_id = int(input("Enter student ID: "))
+    except ValueError:
+        print("Please enter a valid student ID.")
+        return
+
+    for student in students:
+
+        if student.student_id == student_id:
+            student.display_student()
+            return
+
+    print("Student not found.")
+
+
+# Main program
+def main():
+
+    while True:
+
+        print("\n======================================")
+        print(" STUDENT EXAM & RESULTS MANAGEMENT")
+        print("======================================")
+
+        print("1. Add Student")
+        print("2. Add Result")
+        print("3. Display All Students")
+        print("4. Search Student")
+        print("5. Exit")
+
+        choice = input("\nEnter your choice: ")
+
+        if choice == "1":
+            add_student()
+
+        elif choice == "2":
+            add_result()
+
+        elif choice == "3":
+            display_students()
+
+        elif choice == "4":
+            search_student()
+
+        elif choice == "5":
+            print("\nThank you for using the system.")
+            break
+
+        else:
+            print("\nInvalid choice. Please try again.")
+
+
+# Run the program
+if __name__ == "__main__":
+    main()# Student Exam & Results Management System
+# Education Domain
+# Developed using Python Object-Oriented Programming (OOP)
+
+class Result:
+    """
+    Represents the academic result of a student in one course.
+    """
+
+    def __init__(self, course_name, assignment_score, exam_score):
+        self.course_name = course_name
+        self.assignment_score = assignment_score
+        self.exam_score = exam_score
+
+    # Instance method
+    def calculate_total(self):
+        return self.assignment_score + self.exam_score
+
+    # Instance method
+    def get_grade(self):
+        total = self.calculate_total()
+
+        if total >= 80:
+            return "A"
+        elif total >= 70:
+            return "B"
+        elif total >= 60:
+            return "C"
+        elif total >= 50:
+            return "D"
+        else:
+            return "F"
+
+    def display_result(self):
+        total = self.calculate_total()
+        grade = self.get_grade()
+
+        print(f"Course: {self.course_name}")
+        print(f"Assignment Score: {self.assignment_score}")
+        print(f"Exam Score: {self.exam_score}")
+        print(f"Total: {total}")
+        print(f"Grade: {grade}")
+
+
+class Student:
+    """
+    Represents a student in the academic management system.
+    """
+
+    next_id = 1001
+
+    def __init__(self, student_id, name, program):
+        self.student_id = student_id
+        self.name = name
+        self.program = program
+        self.results = []
+
+    # Class method
+    @classmethod
+    def create_student(cls, name, program):
+        student_id = cls.next_id
+        cls.next_id += 1
+
+        return cls(student_id, name, program)
+
+    # Instance method
+    def add_result(self, result):
+        self.results.append(result)
+
+    # Instance method
+    def calculate_average(self):
+        if len(self.results) == 0:
+            return 0
+
+        total = 0
+
+        for result in self.results:
+            total += result.calculate_total()
+
+        return total / len(self.results)
+
+    # Instance method
+    def display_student(self):
+        print("\n------------------------------")
+        print("STUDENT INFORMATION")
+        print("------------------------------")
+        print(f"Student ID: {self.student_id}")
+        print(f"Name: {self.name}")
+        print(f"Program: {self.program}")
+
+        if len(self.results) == 0:
+            print("No results recorded.")
+        else:
+            print("\nRESULTS")
+
+            for result in self.results:
+                result.display_result()
+
+            print(f"\nAverage Score: {self.calculate_average():.2f}")
+
+
+# --------------------------------------------------
+# DATA STRUCTURE
+# One list is used to store multiple Student objects.
+# --------------------------------------------------
+
+students = []
+
+
+# Function to add a student
+def add_student():
+    print("\n===== ADD STUDENT =====")
+
+    name = input("Enter student name: ")
+    program = input("Enter program: ")
+
+    student = Student.create_student(name, program)
+
+    students.append(student)
+
+    print("\nStudent added successfully!")
+    print(f"Generated Student ID: {student.student_id}")
+
+
+# Function to add a result to a student
+def add_result():
+    print("\n===== ADD RESULT =====")
+
+    if len(students) == 0:
+        print("No students available.")
+        return
+
+    try:
+        student_id = int(input("Enter student ID: "))
+    except ValueError:
+        print("Please enter a valid student ID.")
+        return
+
+    for student in students:
+
+        if student.student_id == student_id:
+
+            course_name = input("Enter course name: ")
+
+            try:
+                assignment_score = float(
+                    input("Enter assignment score: ")
+                )
+
+                exam_score = float(
+                    input("Enter exam score: ")
+                )
+            except ValueError:
+                print("Scores must be numbers.")
+                return
+
+            # Basic validation
+            if assignment_score < 0 or assignment_score > 40:
+                print("Assignment score must be between 0 and 40.")
+                return
+
+            if exam_score < 0 or exam_score > 60:
+                print("Exam score must be between 0 and 60.")
+                return
+
+            result = Result(
+                course_name,
+                assignment_score,
+                exam_score
+            )
+
+            # Student and Result objects interact here
+            student.add_result(result)
+
+            print("\nResult added successfully!")
+            return
+
+    print("Student not found.")
+
+
+# Function to display all students
+def display_students():
+
+    print("\n===== ALL STUDENTS =====")
+
+    if len(students) == 0:
+        print("No student records available.")
+        return
+
+    for student in students:
+        student.display_student()
+
+
+# Function to search for a student
+def search_student():
+
+    print("\n===== SEARCH STUDENT =====")
+
+    try:
+        student_id = int(input("Enter student ID: "))
+    except ValueError:
+        print("Please enter a valid student ID.")
+        return
+
+    for student in students:
+
+        if student.student_id == student_id:
+            student.display_student()
+            return
+
+    print("Student not found.")
+
+
+# Main program
+def main():
+
+    while True:
+
+        print("\n======================================")
+        print(" STUDENT EXAM & RESULTS MANAGEMENT")
+        print("======================================")
+
+        print("1. Add Student")
+        print("2. Add Result")
+        print("3. Display All Students")
+        print("4. Search Student")
+        print("5. Exit")
+
+        choice = input("\nEnter your choice: ")
+
+        if choice == "1":
+            add_student()
+
+        elif choice == "2":
+            add_result()
+
+        elif choice == "3":
+            display_students()
+
+        elif choice == "4":
+            search_student()
+
+        elif choice == "5":
+            print("\nThank you for using the system.")
+            break
+
+        else:
+            print("\nInvalid choice. Please try again.")
+
+
+# Run the program
+if __name__ == "__main__":
+    main()
